@@ -1,15 +1,38 @@
 import { QueryKey } from "@tanstack/react-query";
 import { useGetQuery } from "api/useGetQuery";
 import { ReactElement } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Button, { ButtonPrimaryStyle } from "./common/Button";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Home = (): ReactElement => {
   const queries = useQueries();
+  const issueList = queries.getIssueList.data;
+  const columnKeys = [
+    { id: "번호" },
+    { title: "제목" },
+    { login: "작성자" },
+    { created_at: "작성일" },
+    { updated_at: "수정일" },
+    { comment: "코멘트 수" },
+  ];
 
   return (
     <MainHome>
       <p className="applicant">박유나</p>
       <h1>이슈 정리</h1>
+
+      <SectionFilter>
+        <Button styles={StateButtonStyle}>
+          이슈 상태
+          <IoIosArrowDown className="icon" size={"18px"} color={"#14171a"} />
+        </Button>
+
+        <Button styles={SortButtonStyle}>
+          작성일 순
+          <IoIosArrowDown className="icon" size={"18px"} color={"#14171a"} />
+        </Button>
+      </SectionFilter>
     </MainHome>
   );
 };
@@ -34,7 +57,6 @@ const MainHome = styled.main`
     font-size: 16px;
     font-weight: 700;
     line-height: 24px;
-    letter-spacing: 0em;
   }
 
   > h1 {
@@ -42,8 +64,46 @@ const MainHome = styled.main`
     font-size: 20px;
     font-weight: 700;
     line-height: 30px;
-    letter-spacing: 0em;
     margin-top: 32px;
+  }
+`;
+
+const SectionFilter = styled.section`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const StateButtonStyle = css`
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 32px;
+  border: 1px solid #dfe5eb;
+  background: #ffffff;
+
+  > svg {
+    margin-left: 4px;
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+export const SortButtonStyle = css`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  background: #ffffff;
+
+  > svg {
+    margin-left: 4px;
+  }
+
+  &:hover {
+    opacity: 0.7;
   }
 `;
 
