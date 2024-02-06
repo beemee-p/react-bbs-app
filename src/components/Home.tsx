@@ -13,6 +13,7 @@ import {
   issueSortKor,
   issueStateKor,
 } from "model/Issue";
+import Table from "./common/Table";
 
 enum FILLTER_TYPE {
   SORT = "sort",
@@ -25,14 +26,14 @@ const Home = (): ReactElement => {
   const [sortFilter, setSortFilter] = useState(ISSUE_SORT.CREATED);
 
   const queries = useQueries({ state: stateFilter, sort: sortFilter });
-  const issueList = queries.getIssueList.data;
+  const issueList = queries.getIssueList.data as any;
   const columnKeys = [
-    { id: "번호" },
-    { title: "제목" },
-    { login: "작성자" },
-    { created_at: "작성일" },
-    { updated_at: "수정일" },
-    { comment: "코멘트 수" },
+    { key: "id", label: "번호" },
+    { key: "title", label: "제목" },
+    { key: "login", label: "작성자" },
+    { key: "created_at", label: "작성일" },
+    { key: "updated_at", label: "수정일" },
+    { key: "comment", label: "코멘트 수" },
   ];
 
   return (
@@ -61,6 +62,7 @@ const Home = (): ReactElement => {
           </Button>
         </SectionFilter>
 
+        <Table list={issueList} columns={columnKeys} />
         {isFilterModal === FILLTER_TYPE.STATE && (
           <StateFilterModal
             open={isFilterModal === FILLTER_TYPE.STATE}
