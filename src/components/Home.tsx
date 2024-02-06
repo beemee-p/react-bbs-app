@@ -2,7 +2,7 @@ import { QueryKey } from "@tanstack/react-query";
 import { useGetQuery } from "api/useGetQuery";
 import { ReactElement } from "react";
 import styled, { css } from "styled-components";
-import Button, { ButtonPrimaryStyle } from "./common/Button";
+import Button from "./common/Button";
 import { IoIosArrowDown } from "react-icons/io";
 
 const Home = (): ReactElement => {
