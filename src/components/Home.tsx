@@ -1,11 +1,24 @@
 import { QueryKey } from "@tanstack/react-query";
 import { useGetQuery } from "api/useGetQuery";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import styled, { css } from "styled-components";
 import Button from "./common/Button";
 import { IoIosArrowDown } from "react-icons/io";
+import StateFilterModal from "./filter/StateFilterModal";
+import SortFilterModal from "./filter/SortFilterModal";
+import { BBSContext, FilterContext } from "./BBSContext";
+import { ISSUE_SORT, ISSUE_STATE } from "model/Issue";
+
+enum FILLTER_TYPE {
+  SORT = "sort",
+  STATE = "stae",
+}
 
 const Home = (): ReactElement => {
+  const [isFilterModal, setIsFilterModal] = useState<FILLTER_TYPE | null>(null);
+  const [stateFilter, setStateFilter] = useState(ISSUE_STATE.OPEN);
+  const [sortFilter, setSortFilter] = useState(ISSUE_SORT.CREATED);
+
   const queries = useQueries();
   const issueList = queries.getIssueList.data;
   const columnKeys = [
@@ -18,22 +31,46 @@ const Home = (): ReactElement => {
   ];
 
   return (
-    <MainHome>
-      <p className="applicant">박유나</p>
-      <h1>이슈 정리</h1>
+    <BBSContext.Provider
+      value={{ stateFilter, setStateFilter, sortFilter, setSortFilter }}
+    >
+      <MainHome>
+        <p className="applicant">박유나</p>
+        <h1>이슈 정리</h1>
 
-      <SectionFilter>
-        <Button styles={StateButtonStyle}>
-          이슈 상태
-          <IoIosArrowDown className="icon" size={"18px"} color={"#14171a"} />
-        </Button>
+        <SectionFilter>
+          <Button
+            styles={StateButtonStyle}
+            onClick={() => setIsFilterModal(FILLTER_TYPE.STATE)}
+          >
+            이슈 상태
+            <IoIosArrowDown size={"18px"} color={"#14171a"} />
+          </Button>
 
-        <Button styles={SortButtonStyle}>
-          작성일 순
-          <IoIosArrowDown className="icon" size={"18px"} color={"#14171a"} />
-        </Button>
-      </SectionFilter>
-    </MainHome>
+          <Button
+            styles={SortButtonStyle}
+            onClick={() => setIsFilterModal(FILLTER_TYPE.SORT)}
+          >
+            작성일 순
+            <IoIosArrowDown size={"18px"} color={"#14171a"} />
+          </Button>
+        </SectionFilter>
+
+        {isFilterModal === FILLTER_TYPE.STATE && (
+          <StateFilterModal
+            open={isFilterModal === FILLTER_TYPE.STATE}
+            close={() => setIsFilterModal(null)}
+          />
+        )}
+
+        {isFilterModal === FILLTER_TYPE.SORT && (
+          <SortFilterModal
+            open={isFilterModal === FILLTER_TYPE.SORT}
+            close={() => setIsFilterModal(null)}
+          />
+        )}
+      </MainHome>
+    </BBSContext.Provider>
   );
 };
 
