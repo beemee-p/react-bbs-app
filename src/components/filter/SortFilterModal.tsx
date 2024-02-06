@@ -4,13 +4,17 @@ import { ISSUE_SORT, issueSortKor } from "model/Issue";
 import { ReactElement, useState } from "react";
 import { css } from "styled-components";
 import { FaCheck } from "react-icons/fa6";
+import { useBBSContext } from "components/BBSContext";
 
 interface SortFilterModalProps extends ModalProps {}
 
 const SortFilterModal = (props: SortFilterModalProps): ReactElement => {
-  const [sortFilter, setSortFilter] = useState<ISSUE_SORT>(ISSUE_SORT.CREATED);
+  const bbsContext = useBBSContext();
 
-  function handleFilter() {}
+  function handleFilter(key: ISSUE_SORT) {
+    bbsContext.setSortFilter(key);
+    props.close();
+  }
 
   return (
     <>
@@ -20,21 +24,17 @@ const SortFilterModal = (props: SortFilterModalProps): ReactElement => {
         <section className="modal-btn-wrap">
           {issueSortKor.map((issue) => (
             <Button
-              className={sortFilter === issue.key ? "active" : ""}
+              className={bbsContext.sortFilter === issue.key ? "active" : ""}
               styles={StateFillterButtonStyle}
-              onClick={() => setSortFilter(issue.key)}
+              onClick={() => handleFilter(issue.key)}
             >
               <span>{issue.label}</span>
-              {sortFilter === issue.key && (
+              {bbsContext.sortFilter === issue.key && (
                 <FaCheck size={"18px"} color={"#1A8CFF"} />
               )}
             </Button>
           ))}
         </section>
-
-        <Button styles={StateApplyButtonStyle} onClick={handleFilter}>
-          적용
-        </Button>
       </Modal>
     </>
   );

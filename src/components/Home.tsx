@@ -6,8 +6,13 @@ import Button from "./common/Button";
 import { IoIosArrowDown } from "react-icons/io";
 import StateFilterModal from "./filter/StateFilterModal";
 import SortFilterModal from "./filter/SortFilterModal";
-import { BBSContext, FilterContext } from "./BBSContext";
-import { ISSUE_SORT, ISSUE_STATE } from "model/Issue";
+import { BBSContext } from "./BBSContext";
+import {
+  ISSUE_SORT,
+  ISSUE_STATE,
+  issueSortKor,
+  issueStateKor,
+} from "model/Issue";
 
 enum FILLTER_TYPE {
   SORT = "sort",
@@ -19,7 +24,7 @@ const Home = (): ReactElement => {
   const [stateFilter, setStateFilter] = useState(ISSUE_STATE.OPEN);
   const [sortFilter, setSortFilter] = useState(ISSUE_SORT.CREATED);
 
-  const queries = useQueries();
+  const queries = useQueries({ state: stateFilter, sort: sortFilter });
   const issueList = queries.getIssueList.data;
   const columnKeys = [
     { id: "번호" },
@@ -43,7 +48,7 @@ const Home = (): ReactElement => {
             styles={StateButtonStyle}
             onClick={() => setIsFilterModal(FILLTER_TYPE.STATE)}
           >
-            이슈 상태
+            {issueStateKor?.find((state) => state.key === stateFilter)?.label}
             <IoIosArrowDown size={"18px"} color={"#14171a"} />
           </Button>
 
@@ -51,7 +56,7 @@ const Home = (): ReactElement => {
             styles={SortButtonStyle}
             onClick={() => setIsFilterModal(FILLTER_TYPE.SORT)}
           >
-            작성일 순
+            {issueSortKor?.find((sort) => sort.key === sortFilter)?.label}
             <IoIosArrowDown size={"18px"} color={"#14171a"} />
           </Button>
         </SectionFilter>
@@ -74,11 +79,16 @@ const Home = (): ReactElement => {
   );
 };
 
-const useQueries = () => {
+interface UseQueriesProps {
+  state: ISSUE_STATE;
+  sort: ISSUE_SORT;
+}
+
+const useQueries = (props: UseQueriesProps) => {
   const getIssueList = useGetQuery({
     key: "getRepo" as unknown as QueryKey,
     url: "https://api.github.com/repos/facebook/react/issues",
-    params: { sort: "create", state: "open" },
+    params: { sort: props.sort, state: props.state },
   });
 
   return { getIssueList };

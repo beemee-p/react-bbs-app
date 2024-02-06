@@ -1,3 +1,4 @@
+import { useBBSContext } from "components/BBSContext";
 import Button from "components/common/Button";
 import Modal, { ModalProps } from "components/common/Modal";
 import { ISSUE_STATE, issueStateKor } from "model/Issue";
@@ -7,9 +8,11 @@ import { css } from "styled-components";
 interface StateFilterModalProps extends ModalProps {}
 
 const StateFilterModal = (props: StateFilterModalProps): ReactElement => {
+  const bbsContext = useBBSContext();
   const [stateFilter, setStateFilter] = useState<ISSUE_STATE>(ISSUE_STATE.OPEN);
 
   function handleFilter() {
+    bbsContext.setStateFilter(stateFilter);
     props.close();
   }
 
