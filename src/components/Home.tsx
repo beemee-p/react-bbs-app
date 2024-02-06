@@ -63,6 +63,7 @@ const Home = (): ReactElement => {
         </SectionFilter>
 
         <Table list={issueList} columns={columnKeys} />
+
         {isFilterModal === FILLTER_TYPE.STATE && (
           <StateFilterModal
             open={isFilterModal === FILLTER_TYPE.STATE}

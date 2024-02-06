@@ -25,20 +25,20 @@ const Table = (props: TableProps): ReactElement => {
     <DivTable>
       <thead className="table-column-wrap">
         {props.columns.map((column) => (
-          <th>{column.label}</th>
+          <th className={column.key}>{column.label}</th>
         ))}
       </thead>
 
       <tbody>
         {columnData?.map((item) => (
-          <div>
-            <td>{item.id}</td>
-            <td>{item.title}</td>
-            <td>{item.login}</td>
-            <td>{item.created_at}</td>
-            <td>{item.updated_at}</td>
-            <td>{item.comments}</td>
-          </div>
+          <tr>
+            <td className="id">{item.id}</td>
+            <td className="title">{item.title}</td>
+            <td className="login">{item.login}</td>
+            <td className="created">{item.created_at}</td>
+            <td className="updated">{item.updated_at}</td>
+            <td className="comments">{item.comments}</td>
+          </tr>
         ))}
       </tbody>
     </DivTable>
@@ -48,28 +48,39 @@ const Table = (props: TableProps): ReactElement => {
 const DivTable = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 800px;
-  margin: 0 auto;
+  margin: 24px auto;
 
-  .table-column-wrap {
+  thead {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    border-bottom: 1px solid rgb(233, 235, 237);
     background-color: #f2f2f2;
     font-weight: bold;
   }
 
+  tr {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid rgb(233, 235, 237);
+  }
+
   th {
-    padding: 10px;
+    flex-basis: 10rem;
+    text-align: left;
+    padding: 14px 24.5px;
   }
 
   tbody {
-    display: flex;
-    flex-direction: column;
   }
 
   td {
-    padding: 10px;
-    border: 1px solid #ddd;
+    flex-basis: 10rem;
+    padding: 14px 24.5px;
+
+    &.title {
+      flex-basis: 10rem;
+      max-width: 10rem;
+    }
   }
 `;
 export default Table;
