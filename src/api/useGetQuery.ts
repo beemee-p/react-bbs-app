@@ -15,7 +15,7 @@ export function useGetQuery(props: UseGetQueryProps) {
   const params = props.params && removeBlankAttr(props.params);
 
   const config = {
-    headers: { Authorization: `Bearer ${GH_TOKEN}` },
+    // headers: { Authorization: `Bearer ${GH_TOKEN}` },
     params,
   };
 

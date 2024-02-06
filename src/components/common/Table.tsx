@@ -68,6 +68,10 @@ const DivTable = styled.div`
     flex-basis: 10rem;
     text-align: left;
     padding: 14px 24.5px;
+
+    &.title {
+      flex-basis: 20rem;
+    }
   }
 
   tbody {
@@ -78,8 +82,8 @@ const DivTable = styled.div`
     padding: 14px 24.5px;
 
     &.title {
-      flex-basis: 10rem;
-      max-width: 10rem;
+      flex-basis: 20rem;
+      max-width: 20rem;
     }
   }
 `;
